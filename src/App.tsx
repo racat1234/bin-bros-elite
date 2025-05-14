@@ -1,33 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [showBanner, setShowBanner] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+
+  // Show modal on page load after a small delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowModal(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="bg-[#f5f5fb] min-h-screen font-sans relative">
-      {/* Cash Only Banner */}
-      {showBanner && (
-        <div className="bg-[#87cae7] text-white py-2 px-4 text-center relative z-50">
-          <div className="container mx-auto flex justify-center items-center">
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span className="font-medium">We are a cash-only business. Please have exact change ready at time of service.</span>
+      {/* Cash Only Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 animate-fade-in">
+            <div className="text-center mb-4">
+              <div className="bg-[#87cae7] text-white h-16 w-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Cash Payment Notice</h3>
+              <p className="text-gray-600">Just a heads up - we're a cash-only service. Thanks for your cooperation!</p>
+            </div>
             <button
-              onClick={() => setShowBanner(false)}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-100"
-              aria-label="Close banner"
+              onClick={() => setShowModal(false)}
+              className="w-full py-3 bg-[#87cae7] hover:bg-[#66b5d7] text-white rounded-lg font-medium transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
+              I understand
             </button>
           </div>
         </div>
       )}
 
       {/* Header */}
-      <header className={`sticky top-0 w-full bg-white/80 shadow-sm z-50 backdrop-blur-[2px] transition-all ${showBanner ? 'mt-0' : ''}`}>
+      <header className="sticky top-0 w-full bg-white/80 shadow-sm z-40 backdrop-blur-[2px] transition-all">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
@@ -225,6 +235,13 @@ function App() {
       <style>{`
           a, button {
             transition: background 0.3s cubic-bezier(.4,0,.2,1), color 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
+          }
+          @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+          }
+          .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
           }
         `}</style>
     </div>
